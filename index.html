@@ -5,43 +5,132 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Music Cloud - Signup/Login</title>
   <style>
-    /* Basic styles for the forms and buttons */
+    /* Reset default styling */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* Body Styles */
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f0f0f0;
-      text-align: center;
+      font-family: 'Arial', sans-serif;
+      background-color: #f7f7f7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
     }
+
+    h2 {
+      color: #333;
+    }
+
+    /* Form Container */
     .form-container {
+      width: 100%;
       max-width: 400px;
-      margin: 50px auto;
       padding: 20px;
-      background-color: white;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      transform: scale(0.9);
+      animation: zoomIn 0.4s forwards;
     }
+
+    /* Animations */
+    @keyframes zoomIn {
+      from {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    /* Input fields */
     input {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       margin: 10px 0;
       border-radius: 5px;
       border: 1px solid #ddd;
+      font-size: 16px;
+      outline: none;
+      transition: border-color 0.3s ease;
     }
+
+    input:focus {
+      border-color: #4CAF50;
+    }
+
+    /* Button */
     button {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       background-color: #4CAF50;
       color: white;
+      font-size: 16px;
       border: none;
       border-radius: 5px;
-      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
     }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    /* Links */
     a {
       text-decoration: none;
       color: #4CAF50;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    a:hover {
+      color: #45a049;
+    }
+
+    /* Container for Switch Between Forms */
+    .form-toggle {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    /* Add a background animation for the form */
+    .background-animation {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+      z-index: -1;
+      animation: backgroundMove 10s ease infinite;
+    }
+
+    @keyframes backgroundMove {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
     }
   </style>
 </head>
 <body>
+
+  <!-- Background Animation -->
+  <div class="background-animation"></div>
 
   <!-- Signup Form -->
   <div class="form-container" id="signup-form">
@@ -51,7 +140,9 @@
     <p>Password</p>
     <input type="password" id="password" placeholder="Enter Password" required>
     <button onclick="signup()">Get Started</button>
-    <p>Already have an account? <a href="#" onclick="showLoginForm()">Sign In</a></p>
+    <div class="form-toggle">
+      Already have an account? <a href="#" onclick="showLoginForm()">Sign In</a>
+    </div>
   </div>
 
   <!-- Login Form (Hidden by default) -->
@@ -62,7 +153,9 @@
     <p>Password</p>
     <input type="password" id="login-password" placeholder="Enter Password" required>
     <button onclick="login()">Sign In</button>
-    <p>Don't have an account? <a href="#" onclick="showSignupForm()">Create New Account</a></p>
+    <div class="form-toggle">
+      Don't have an account? <a href="#" onclick="showSignupForm()">Create New Account</a>
+    </div>
   </div>
 
   <script>
