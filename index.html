@@ -1,54 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Music Cloud</title>
-    <style>
-        body {
-            background: linear-gradient(to right, #1e3c72, #2a5298);
-            color: white;
-            text-align: center;
-            font-family: Arial, sans-serif;
-            padding: 50px;
-        }
-        h1 {
-            font-size: 48px;
-            margin-bottom: 20px;
-        }
-        p {
-            font-size: 20px;
-            margin-bottom: 30px;
-        }
-        input {
-            padding: 10px;
-            margin: 10px;
-            width: 250px;
-            border-radius: 5px;
-            border: none;
-        }
-        .button {
-            background: #ffcc00;
-            color: black;
-            padding: 15px 30px;
-            text-decoration: none;
-            font-size: 18px;
-            border-radius: 5px;
-            display: inline-block;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-        .button:hover {
-            background: #ffdd44;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Music Cloud - Signup/Login</title>
+  <style>
+    /* Basic styles for the forms and buttons */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      text-align: center;
+    }
+    .form-container {
+      max-width: 400px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    a {
+      text-decoration: none;
+      color: #4CAF50;
+    }
+  </style>
 </head>
 <body>
-    <h1>🎵 Welcome to Music Cloud 🎵</h1>
-    <p>Your personal cloud storage for music and files.</p>
 
-    <input type="text" id="username" placeholder="Enter Username"><br>
-    <input type="password" id="password" placeholder="Enter Password"><br>
-    <a href="upload.html" class="button">Get Started</a>
+  <!-- Signup Form -->
+  <div class="form-container" id="signup-form">
+    <h2>Create New Account</h2>
+    <p>Username</p>
+    <input type="text" id="username" placeholder="Enter Username" required>
+    <p>Password</p>
+    <input type="password" id="password" placeholder="Enter Password" required>
+    <button onclick="signup()">Get Started</button>
+    <p>Already have an account? <a href="#" onclick="showLoginForm()">Sign In</a></p>
+  </div>
+
+  <!-- Login Form (Hidden by default) -->
+  <div class="form-container" id="login-form" style="display:none;">
+    <h2>Sign In</h2>
+    <p>Username</p>
+    <input type="text" id="login-username" placeholder="Enter Username" required>
+    <p>Password</p>
+    <input type="password" id="login-password" placeholder="Enter Password" required>
+    <button onclick="login()">Sign In</button>
+    <p>Don't have an account? <a href="#" onclick="showSignupForm()">Create New Account</a></p>
+  </div>
+
+  <script>
+    // Show the login form
+    function showLoginForm() {
+      document.getElementById('signup-form').style.display = 'none';
+      document.getElementById('login-form').style.display = 'block';
+    }
+
+    // Show the signup form
+    function showSignupForm() {
+      document.getElementById('login-form').style.display = 'none';
+      document.getElementById('signup-form').style.display = 'block';
+    }
+
+    // Signup function to call Google Apps Script
+    function signup() {
+      var username = document.getElementById('username').value;
+      var password = document.getElementById('password').value;
+
+      if (username && password) {
+        var data = {
+          action: 'signup',
+          username: username,
+          password: password
+        };
+
+        // Send data to Google Apps Script
+        fetch('https://script.google.com/macros/s/AKfycbw2uGUwliBmVzyN0TGa-UxhwQgE_G1kqhSp8Gt_4VdkVjCEftpmE3K7TpfR4gqzPAfEGQ/exec', {
+          method: 'POST',
+          body: JSON.stringify(data),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => response.json())
+        .then(result => {
+          alert(result.message);  // Show the success message
+          if (result.success) {
+            // Redirect to a new page or show the user's content
+            window.location.href = '/upload.html';  // You can change this to your upload page
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert("Something went wrong! Please try again.");
+        });
+      } else {
+        alert('Please enter both username and password.');
+      }
+    }
+
+    // Login function to call Google Apps Script
+    function login() {
+      var username = document.getElementById('login-username').value;
+      var password = document.getElementById('login-password').value;
+
+      if (username && password) {
+        var data = {
+          action: 'login',
+          username: username,
+          password: password
+        };
+
+        // Send data to Google Apps Script
+        fetch('https://script.google.com/macros/s/AKfycbw2uGUwliBmVzyN0TGa-UxhwQgE_G1kqhSp8Gt_4VdkVjCEftpmE3K7TpfR4gqzPAfEGQ/exec', {
+          method: 'POST',
+          body: JSON.stringify(data),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => response.json())
+        .then(result => {
+          alert(result.message);  // Show the login result message
+          if (result.success) {
+            // Redirect to the user's content or homepage
+            window.location.href = '/upload.html';  // You can change this to your upload page
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert("Something went wrong! Please try again.");
+        });
+      } else {
+        alert('Please enter both username and password.');
+      }
+    }
+  </script>
 </body>
 </html>
