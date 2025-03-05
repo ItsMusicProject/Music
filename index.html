@@ -5,14 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Music Cloud - Signup/Login</title>
   <style>
-    /* Reset default styling */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
 
-    /* Body Styles */
     body {
       font-family: 'Arial', sans-serif;
       background-color: #f7f7f7;
@@ -27,7 +25,6 @@
       color: #333;
     }
 
-    /* Form Container */
     .form-container {
       width: 100%;
       max-width: 400px;
@@ -39,7 +36,6 @@
       animation: zoomIn 0.4s forwards;
     }
 
-    /* Animations */
     @keyframes zoomIn {
       from {
         transform: scale(0.8);
@@ -51,7 +47,6 @@
       }
     }
 
-    /* Input fields */
     input {
       width: 100%;
       padding: 12px;
@@ -67,7 +62,6 @@
       border-color: #4CAF50;
     }
 
-    /* Button */
     button {
       width: 100%;
       padding: 12px;
@@ -84,7 +78,6 @@
       background-color: #45a049;
     }
 
-    /* Links */
     a {
       text-decoration: none;
       color: #4CAF50;
@@ -96,13 +89,11 @@
       color: #45a049;
     }
 
-    /* Container for Switch Between Forms */
     .form-toggle {
       margin-top: 15px;
       font-size: 14px;
     }
 
-    /* Add a background animation for the form */
     .background-animation {
       position: absolute;
       top: 0;
@@ -129,7 +120,6 @@
 </head>
 <body>
 
-  <!-- Background Animation -->
   <div class="background-animation"></div>
 
   <!-- Signup Form -->
@@ -145,7 +135,7 @@
     </div>
   </div>
 
-  <!-- Login Form (Hidden by default) -->
+  <!-- Login Form -->
   <div class="form-container" id="login-form" style="display:none;">
     <h2>Sign In</h2>
     <p>Username</p>
@@ -159,22 +149,22 @@
   </div>
 
   <script>
-    // Show the login form
     function showLoginForm() {
       document.getElementById('signup-form').style.display = 'none';
       document.getElementById('login-form').style.display = 'block';
     }
 
-    // Show the signup form
     function showSignupForm() {
       document.getElementById('login-form').style.display = 'none';
       document.getElementById('signup-form').style.display = 'block';
     }
 
-    // Signup function to call Google Apps Script
+    // Your Google Apps Script URL
+    const scriptURL = "https://script.google.com/macros/s/AKfycbw2uGUwliBmVzyN0TGa-UxhwQgE_G1kqhSp8Gt_4VdkVjCEftpmE3K7TpfR4gqzPAfEGQ/exec";
+
     function signup() {
-      var username = document.getElementById('username').value;
-      var password = document.getElementById('password').value;
+      var username = document.getElementById('username').value.trim();
+      var password = document.getElementById('password').value.trim();
 
       if (username && password) {
         var data = {
@@ -183,20 +173,16 @@
           password: password
         };
 
-        // Send data to Google Apps Script
-        fetch('https://script.google.com/macros/s/AKfycbw2uGUwliBmVzyN0TGa-UxhwQgE_G1kqhSp8Gt_4VdkVjCEftpmE3K7TpfR4gqzPAfEGQ/exec', {
+        fetch(scriptURL, {
           method: 'POST',
           body: JSON.stringify(data),
-          headers: {
-            'Content-Type': 'application/json'
-          }
+          headers: { 'Content-Type': 'application/json' }
         })
         .then(response => response.json())
         .then(result => {
-          alert(result.message);  // Show the success message
+          alert(result.message);
           if (result.success) {
-            // Redirect to a new page or show the user's content
-            window.location.href = '/upload.html';  // You can change this to your upload page
+            window.location.href = '/upload.html'; 
           }
         })
         .catch(error => {
@@ -208,10 +194,9 @@
       }
     }
 
-    // Login function to call Google Apps Script
     function login() {
-      var username = document.getElementById('login-username').value;
-      var password = document.getElementById('login-password').value;
+      var username = document.getElementById('login-username').value.trim();
+      var password = document.getElementById('login-password').value.trim();
 
       if (username && password) {
         var data = {
@@ -220,20 +205,16 @@
           password: password
         };
 
-        // Send data to Google Apps Script
-        fetch('https://script.google.com/macros/s/AKfycbw2uGUwliBmVzyN0TGa-UxhwQgE_G1kqhSp8Gt_4VdkVjCEftpmE3K7TpfR4gqzPAfEGQ/exec', {
+        fetch(scriptURL, {
           method: 'POST',
           body: JSON.stringify(data),
-          headers: {
-            'Content-Type': 'application/json'
-          }
+          headers: { 'Content-Type': 'application/json' }
         })
         .then(response => response.json())
         .then(result => {
-          alert(result.message);  // Show the login result message
+          alert(result.message);
           if (result.success) {
-            // Redirect to the user's content or homepage
-            window.location.href = '/upload.html';  // You can change this to your upload page
+            window.location.href = '/upload.html';
           }
         })
         .catch(error => {
